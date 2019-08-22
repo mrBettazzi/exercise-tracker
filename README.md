@@ -4,36 +4,47 @@ This projects gathers all info I learned following an online cource about the ME
 ## Prerequisites
 * [mlab](https://mlab.com) account
 * [Github](https://github.com/github) account
-* database initialized [here]((https://mlab.com/databases/mymongo/collections) 
+* database initialized [here](https://mlab.com/databases/mymongo/collections) 
 * Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
 * node installed (run `node -v`to check version)
 * nodemon installed (`npm install -g nodemon`)
+* yarn installed
 * Postman app installed (no `npm`, no `brew`, occorre fare download dal loro sito)
 
 ## Kick off
-bootstrap project with [Create React App](https://github.com/facebook/create-react-app):
-`create-react-app my-exercise-tracker`
-`cd my-exercise-tracker`
-`git init`
-`git add .`
-`git remote add otigin https://github.com/mrBettazzi/exercise-tracker`
-`git commit -m "plain starr"`
-`git push -u origin msster`
+bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
+```
+create-react-app my-exercise-tracker
+cd my-exercise-tracker
+git init
+```
+Ensure that the `.gitignore` file contains `/node_modules`.
+Check that everything works using `yarn start`
+
+```
+git add .
+git remote add otigin https://github.com/mrBettazzi/exercise-tracker
+git commit -m "plain starr"
+git push -u origin msster
+```
 
 ## backend
-### create the backend
-`mkdir backend`
-`cd backend`
-`npm init -y`
-`npm install express cors mongoose dotenv`
+Create the backend project ***inside*** the React app (not recommended)
+```
+mkdir backend
+cd backend
+npm init -y
+npm install express cors mongoose dotenv
+```
+ensure that the `.gitignore` file contains `/backend/node_modules`
 
-### setup the backend environment (file `.env`)
+Setup the backend environment in the `.env` file
 ```
 DB_URI=mongodb://user:password@ds063919.mlab.com:63919/mymongo
 PORT=4202
 ```
 
-### prepare a BASIC `server.js` file
+Prepare a BASIC `server.js` file to check that everything works
 ```
 const express = require ('express');
 const cors = require('cors');
