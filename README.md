@@ -7,8 +7,8 @@ This projects gathers all the info I learned following
 * [Github](https://github.com/github) account
 * database initialized [here](https://mlab.com/databases/mymongo/collections) 
 * Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
-* node installed (run `node -v`to check version)
-* nodemon installed (`npm install -g nodemon`)
+* node installed (`$ node -v`to check version)
+* nodemon installed (`$ npm install -g nodemon`)
 * yarn installed
 * Postman app installed (no `npm`, no `brew`, occorre fare download dal loro sito)
 
@@ -20,7 +20,7 @@ cd my-exercise-tracker
 git init
 ```
 Ensure that the `.gitignore` file contains `/node_modules`.
-Check that everything works using `yarn start`
+Check that everything works using `yarn start` :
 
 ```
 git add .
@@ -232,8 +232,28 @@ app.listen(port, () => {
 });
 
 ```
+Now run again the backend app
+```
+cd backend
+nodemon server.js
+```
+Then you can use Postman to test the API endpoints :
+```
+localhost:4202/users/add 
+{ "username": "John" }
 
+localhost:4202/exercises/add
+{ "username": "John", "description":"stay at home", "duration":"28", "mydate":"2019-05-23T15:14:59.000Z" }
 
+localhost:4202/exercises
+
+localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
+{ "username": "John", "description":"back on vacation", "duration":"10", "mydate":"2019-09-01" }
+
+```
+cd backend
+nodemon server.js
+```
 # previous text from create-react-app
 ### `npm start`
 Runs the app in the development mode.
