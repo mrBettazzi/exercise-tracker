@@ -251,9 +251,7 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 { "username": "John", "description":"back on vacation", "duration":"10", "mydate":"2019-09-01" }
 
 ```
-cd backend
-nodemon server.js
-```
+
 # previous text from create-react-app
 ### `npm start`
 Runs the app in the development mode.
