@@ -70,13 +70,17 @@ app.listen(port, () => {
 });
 
 ```
-> to run the backend app
-`cd backend`
-`nodemon server.js`
+Run the backend app
+```
+cd backend
+nodemon server.js
+```
 
-### prepare the database interface
-`mkdir backend/models`
-prepare a BASIC `user.model.js` file
+Prepare the database interface
+```
+mkdir backend/models
+```
+Prepare a BASIC `user.model.js` file
 ```
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -96,20 +100,16 @@ const userSchema = new Schema({
 const User = mongoose.model('User', userSchema);
 module.exports = User;
 ```
-
-### complete the `server.js` file
+Prepare routing
 ```
-const express = require ('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-
-require('dotenv').config();
-
-const app = express();
-const port = process.env.PORT || 5000;
-
-app.use(cors());
-app.use(express.json());
+mkdir backend/routes
+```
+write the `usersRouter.js` file
+```
+```
+Complete the `server.js` file
+```
+...
 
 const uri = process.env.DB_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
