@@ -1,12 +1,128 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# my-exercise-tracker
+This projects gathers all info I learned following an online cource about the MERN stack.
 
-## Available Scripts
+## Prerequisites
+* [mlab](https://mlab.com) account
+* [Github](https://github.com/github) account
+* database initialized [here]((https://mlab.com/databases/mymongo/collections) 
+* Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
+* node installed (run `node -v`to check version)
+* nodemon installed (`npm install -g nodemon`)
+* Postman app installed (no `npm`, no `brew`, occorre fare download dal loro sito)
 
-In the project directory, you can run:
+## Kick off
+bootstrap project with [Create React App](https://github.com/facebook/create-react-app):
+`create-react-app my-exercise-tracker`
+`cd my-exercise-tracker`
+`git init`
+`git add .`
+`git remote add otigin https://github.com/mrBettazzi/exercise-tracker`
+`git commit -m "plain starr"`
+`git push -u origin msster`
 
+## backend
+### create the backend
+`mkdir backend`
+`cd backend`
+`npm init -y`
+`npm install express cors mongoose dotenv`
+
+### setup the backend environment (file `.env`)
+```
+DB_URI=mongodb://user:password@ds063919.mlab.com:63919/mymongo
+PORT=4202
+```
+
+### prepare a BASIC `server.js` file
+```
+const express = require ('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+const uri = process.env.DB_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+const connection = mongoose.connection;
+connection.once('open', () => {
+  console.log(`MongoDB database connection established successfully`);
+})
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+```
+> to run the backend app
+`cd backend`
+`nodemon server.js`
+
+### prepare the database interface
+`mkdir backend/models`
+prepare a BASIC `user.model.js` file
+```
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
+}, {
+  timestamps: true,
+});
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;
+```
+
+### complete the `server.js` file
+```
+const express = require ('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+const uri = process.env.DB_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+const connection = mongoose.connection;
+connection.once('open', () => {
+  console.log(`MongoDB database connection established successfully`);
+})
+
+const exercisesRouter = require('./routes/exercisesRouter');
+const usersRouter = require('./routes/usersRouter');
+
+app.use('/exercises', exercisesRouter);
+app.use('/users', usersRouter);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+```
+
+
+# previous text from create-react-app
 ### `npm start`
-
-Runs the app in the development mode.<br>
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
