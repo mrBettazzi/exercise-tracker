@@ -1,5 +1,6 @@
 # my-exercise-tracker
-This projects gathers all info I learned following an online cource about the MERN stack.
+This projects gathers all the info I learned following
+[this online tutorial](https://www.youtube.com/watch?v=7CqJlxBYj-M) about the MERN stack.
 
 ## Prerequisites
 * [mlab](https://mlab.com) account
@@ -83,7 +84,7 @@ Models will be linked to the application using **routing**
 ```
 mkdir backend/models
 ```
-Prepare a BASIC `user.model.js` file
+Prepare the `backend/models/user.model.js` with BASIC data validation :
 ```
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -103,7 +104,7 @@ const userSchema = new Schema({
 const User = mongoose.model('User', userSchema);
 module.exports = User;
 ```
-Prepare a BASIC `exercise.model.js` file (* see how models are always more or less the same *)
+Prepare the `backend/models/exercise.model.js` file (*see how models are always more or less the same*)
 ```
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -124,12 +125,90 @@ const Exercise = mongoose.model('Exercise', exerciseSchema);
 module.exports = Exercise;
 ```
 ### Routing
-Routing goes in a separate directory
+Routing goes in a separate directory:
 ```
 mkdir backend/routes
 ```
-write the `usersRouter.js` file
+Prepare a BASIC `backend/routes/usersRouter.js` file
 ```
+const router = require('express').Router();
+let User = require('../models/user.model');
+
+router.route('/').get((req, res) => {
+  User.find()
+    .then(users => res.json(users))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/add').post((req, res) => {
+  const username = req.body.username;
+  const newUser = new User({username});
+  newUser.save()
+    .then(() => res.json('User added'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+module.exports = router;
+```
+Prepare the `backend/routes/exercisesRouter.js` file. 
+This file is richer and contains all the needed CRUD logic
+```
+const router = require('express').Router();
+let Exercise = require('../models/exercise.model');
+
+router.route('/').get((req, res) => {
+  Exercise.find()
+    .then(exercises => res.json(exercises))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/add').post((req, res) => {
+  const username = req.body.username;
+  const description = req.body.description;
+  const duration = Number(req.body.duration);
+  const date = Date.parse(req.body.mydate);
+
+  const newExercise = new Exercise({
+    username,
+    description,
+    duration,
+    date  // remark trailing comma
+  });
+
+  newExercise.save()
+    .then(() => res.json('Exercise added'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/:id').get((req,res) => {
+  Exercise.findById(req.params.id)
+    .then(exercise => res.json(exercise))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/delete/:id').delete((req,res) => {
+  Exercise.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Exercise deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/update/:id').post((req,res) => {
+  Exercise.findById(req.params.id)
+    .then(exercise => {
+      exercise.username = req.body.username;
+      exercise.description = req.body.description;
+      exercise.duration = Number(req.body.duration);
+      exercise.date = Date.parse(req.body.mydate);
+
+      exercise.save()
+        .then(() => res.json('Exercise updated'))
+        .catch(err => res.status(400).json('Error: ' + err));
+  })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+module.exports = router;
+
 ```
 Complete the `server.js` file
 ```
