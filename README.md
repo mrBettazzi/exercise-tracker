@@ -252,6 +252,25 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 
 ```
 
+# React concepts
+## a basic Component (what I want to see on the screen)
+```
+class ShoppingList extends React.Component {
+  render () {
+    return(
+      <div classname="shopping-list">
+        <h1>Shopping List for {this.props.name}</h1>
+        <ul>
+          <li>Cereal</li>
+          <li>Milk</li>
+        </ul>
+      </div>
+    );
+  }
+} 
+// usage example in an HTML page : <ShoppingList name="Paolo" />
+```
+
 # previous text from create-react-app
 ### `npm start`
 Runs the app in the development mode.
