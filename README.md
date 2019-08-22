@@ -44,6 +44,7 @@ DB_URI=mongodb://user:password@ds063919.mlab.com:63919/mymongo
 PORT=4202
 ```
 
+### BASIC `server.js`
 Prepare a BASIC `server.js` file to check that everything works
 ```
 const express = require ('express');
@@ -76,7 +77,9 @@ cd backend
 nodemon server.js
 ```
 
-Prepare the database interface
+### Database interface
+The models are to be written in a dedicated directory.
+Models will be linked to the application using **routing**
 ```
 mkdir backend/models
 ```
@@ -100,7 +103,28 @@ const userSchema = new Schema({
 const User = mongoose.model('User', userSchema);
 module.exports = User;
 ```
-Prepare routing
+Prepare a BASIC `exercise.model.js` file (* see how models are always more or less the same *)
+```
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const exerciseSchema = new Schema({
+  username: {
+    type: String,
+    required: true
+  },
+  description: { type: String, required: true },
+  duration: { type: Number, required: true },
+  date: { type: Date, required: true }
+}, {
+  timestamps: true,
+});
+
+const Exercise = mongoose.model('Exercise', exerciseSchema);
+module.exports = Exercise;
+```
+### Routing
+Routing goes in a separate directory
 ```
 mkdir backend/routes
 ```
