@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';  // requires a specific stylesheet, so ...
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default class ExerciseCreate extends Component {
   constructor(props) {
@@ -51,10 +53,10 @@ export default class ExerciseCreate extends Component {
   onSubmit(e) {
     e.preventDefault(); // intercept React default behaviour
     const exercise = {
-      username = this.state.username,
-      description = this.state.description,
-      duration = this.state.duration,
-      date = this.state.date
+      username: this.state.username,
+      description: this.state.description,
+      duration: this.state.duration,
+      date: this.state.date
     }
     // temporary
     console.log(exercise)
