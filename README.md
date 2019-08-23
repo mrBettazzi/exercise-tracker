@@ -262,7 +262,7 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 ## frontend
 Make sure you have installed required components
 ```
-npm install bootstrap react-router-dom
+npm install bootstrap react-router-dom react-datepicker
 ```
 Starting point is `public/index.html`. The **root** div is where the React application will be put to use.
 The original template provided by *create-react-app* was this ...
@@ -459,8 +459,12 @@ export default class ExercisesList extends Component {
 ```
 So that we can now
 ```
+npm run
+yarn build
 ```
-
+### real components
+> In React components the **constructor** should always call `super()`
+> In React you never use `let` to declare variables. Variables are to be declared/defined in `Component.state` (see **constructor** below)
 
 
 # React concepts
