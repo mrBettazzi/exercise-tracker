@@ -418,18 +418,18 @@ function App() {
 
 export default App;
 ```
-Now we are going to design the single React components.
-### Navbar is `src/components/navbar.component.js`
+And now we design the single React components.
+### Navbar
+Source file is `src/components/navbar.component.js`
 ```
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 export default class Navbar extends Component {
-  (method) Navbar.render(): JSX.element
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">Tracker</Link>
+        <Link to="/" className="navbar-brand">Exercise Tracker</Link>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="navbar-item"><Link to="/" className="nav-link">List Exercises</Link></li>
@@ -442,7 +442,24 @@ export default class Navbar extends Component {
   }
 }
 ```
+### stub components
+To be able to test the application we need to put in place fake components like this `src/components/exercises-list.component.js`:
+```
+import React, { Component } from 'react';
 
+export default class ExercisesList extends Component {
+  render() {
+    return (
+      <div>
+        <p>You are on the Exercises List component ...</p>
+      </div>
+    );
+  }
+}
+```
+So that we can now
+```
+```
 
 
 
