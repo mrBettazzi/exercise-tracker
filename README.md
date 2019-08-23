@@ -7,25 +7,30 @@ This projects gathers all the info I learned following
 * [Github](https://github.com/github) account
 * database initialized [here](https://mlab.com/databases/mymongo/collections) 
 * Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
-* node installed (`$ node -v`to check version)
+* **node** and **npm** installed (`$ node -v`to check version)
 * nodemon installed (`$ npm install -g nodemon`)
 * yarn installed
 * Postman app installed (no `npm`, no `brew`, occorre fare download dal loro sito)
+* **create-react-app** installed
 
 ## Kick off
 bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
 ```
-create-react-app my-exercise-tracker
+npm -g uninstall create-react-app
+npx create-react-app my-exercise-tracker
 cd my-exercise-tracker
+```
+Check that everything works using `yarn start` or `npm start`.
+## Git enablement
+initialize Git components
+```
 git init
 ```
-Ensure that the `.gitignore` file contains `/node_modules`.
-Check that everything works using `yarn start` :
-
+Ensure that the `.gitignore` file contains `/node_modules` `DS_Store` `dist`.
 ```
 git add .
-git remote add otigin https://github.com/mrBettazzi/exercise-tracker
-git commit -m "plain starr"
+git remote add origin https://github.com/mrBettazzi/exercise-tracker
+git commit -m "plain start"
 git push -u origin msster
 ```
 
@@ -251,6 +256,175 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 { "username": "John", "description":"back on vacation", "duration":"10", "mydate":"2019-09-01" }
 
 ```
+
+
+
+## frontend
+Make sure you have installed required components
+```
+npm install bootstrap react-router-dom
+```
+Starting point is `public/index.html`. The **root** div is where the React application will be put to use.
+The original template provided by *create-react-app* was this ...
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
+```
+We don't need manifest neither comments, so after some simplification and customization we have this :
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="exercise tracker by mrBettazzi"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Exercise Tracker</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+```
+Next important file is `src/index.js` *CALLED IN SOME WAY THAT I DON'T YET UNDERSTAND BY Node.js*.
+This is the original version :
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+```
+Note that it invokes `src/App.js`. 
+We don't need neither specific `.css` files here, nor *serviceWorker*, 
+so for our scope `src/index.js`can be trimmed down this way :
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+Now comes `src/App.js` - this is the original version :
+```
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
+In the `src/App.js` file we will break down the entire application into visual components.
+In the following sample, *Navbar*, *ExercisesList* etc. are all visual components.
+The **BrowserRouter** library makes it easy to manage routing (opening and closing specific components based on the requested address)
+this is how `src/App.js`looks like after initial customization :
+```
+import React from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import Navbar         from "./components/navbar.component";
+import ExercisesList  from "./components/exercises-list.component";
+import ExerciseEdit   from "./components/exercise-edit.component";
+import ExerciseCreate from "./components/exercise-create.component";
+import UserCreate     from "./components/user-create.component";
+
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      <br />
+      <Route path "/" exact component={ExercisesList} />
+      <Route path "/edit/:id" component={ExerciseEdit} />
+      <Route path "/create" component={ExerciseCreate} />
+      <Route path "/user" component={UserCreate} />
+    </Router>
+  );
+}
+
+export default App;
+```
+Now we are going to design the single React components.
+#### `src/components/navbar.component.js`
+```
+```
+
+
+
 
 # React concepts
 ## a basic Component (what I want to see on the screen)
