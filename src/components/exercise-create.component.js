@@ -50,6 +50,12 @@ export default class ExerciseCreate extends Component {
     });
   }
 
+  onChangeDate(date) {
+    this.setState({
+      date: date
+    });
+  }
+  
   onSubmit(e) {
     e.preventDefault(); // intercept React default behaviour
     const exercise = {
@@ -59,14 +65,9 @@ export default class ExerciseCreate extends Component {
       date: this.state.date
     }
     // temporary
-    console.log(exercise)
-  }
-  
-  // we're using the React datepicker component in the UI
-  onChangeDate(date) {
-    this.setState({
-      date: date
-    });
+    console.log(exercise);
+
+    window.location ='/';
   }
   
   render() {

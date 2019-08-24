@@ -6,7 +6,7 @@ export default class Navbar extends Component {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
         <Link to="/" className="navbar-brand">Exercise Tracker</Link>
-        <div className="collapse navbar-collapse">
+        <div className="navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="navbar-item"><Link to="/" className="nav-link">List Exercises</Link></li>
             <li className="navbar-item"><Link to="/create" className="nav-link">Exercise Log</Link></li>
