@@ -171,7 +171,7 @@ router.route('/add').post((req, res) => {
   const username = req.body.username;
   const description = req.body.description;
   const duration = Number(req.body.duration);
-  const date = Date.parse(req.body.mydate);
+  const date = Date.parse(req.body.date);
 
   const newExercise = new Exercise({
     username,
@@ -203,7 +203,7 @@ router.route('/update/:id').post((req,res) => {
       exercise.username = req.body.username;
       exercise.description = req.body.description;
       exercise.duration = Number(req.body.duration);
-      exercise.date = Date.parse(req.body.mydate);
+      exercise.date = Date.parse(req.body.date);
 
       exercise.save()
         .then(() => res.json('Exercise updated'))
@@ -248,12 +248,12 @@ localhost:4202/users/add
 { "username": "John" }
 
 localhost:4202/exercises/add
-{ "username": "John", "description":"stay at home", "duration":"28", "mydate":"2019-05-23T15:14:59.000Z" }
+{ "username": "John", "description":"stay at home", "duration":"28", "date":"2019-05-23T15:14:59.000Z" }
 
 localhost:4202/exercises
 
 localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
-{ "username": "John", "description":"back on vacation", "duration":"10", "mydate":"2019-09-01" }
+{ "username": "John", "description":"back on vacation", "duration":"10", "date":"2019-09-01" }
 
 ```
 
