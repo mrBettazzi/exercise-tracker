@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';  // requires a specific stylesheet, so ...
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -67,6 +68,12 @@ export default class ExerciseCreate extends Component {
     // temporary
     console.log(exercise);
 
+    // hideous hard-coded URL
+    axios.post('http://localhost:4202/exercise/add', exercise)
+      .then(res => {
+        console.log(res.data)
+      });
+
     window.location ='/';
   }
   
@@ -94,7 +101,7 @@ export default class ExerciseCreate extends Component {
           </div>
 
           <div className="form-group">
-            <label>Duration (in minutes): </label>
+            <label>Duration (minutes): </label>
             <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />         
           </div>
 

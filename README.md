@@ -262,7 +262,7 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 ## frontend
 Make sure you have installed required components
 ```
-npm install bootstrap react-router-dom react-datepicker
+npm install bootstrap react-router-dom react-datepicker axios
 ```
 Starting point is `public/index.html`. The **root** div is where the React application will be put to use.
 The original template provided by *create-react-app* was this ...
@@ -430,7 +430,7 @@ export default class Navbar extends Component {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
         <Link to="/" className="navbar-brand">Exercise Tracker</Link>
-        <div className="collapse navbar-collapse">
+        <div className="navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="navbar-item"><Link to="/" className="nav-link">List Exercises</Link></li>
             <li className="navbar-item"><Link to="/create" className="nav-link">Exercise Log</Link></li>
@@ -585,6 +585,8 @@ export default class ExerciseCreate extends Component {
   }
 }
 ```
+### connecting the front-end to the back-end
+The front-end user the Axios library to make XmlHttp requests to the back-end.
 
 
 # React concepts

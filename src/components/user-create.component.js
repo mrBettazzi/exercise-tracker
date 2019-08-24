@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class UserCreate extends Component {
 
@@ -29,6 +30,12 @@ export default class UserCreate extends Component {
     }
     // temporary
     console.log(user);
+
+    // hideous hard-coded URL
+    axios.post('http://localhost:4202/users/add', user)
+      .then(res => {
+        console.log(res.data)
+      });
 
     // (temporary) empty the field for further input
     this.setState({
