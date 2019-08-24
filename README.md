@@ -1,7 +1,7 @@
 # my-exercise-tracker
 This projects gathers all the info I learned following
 [an online tutorial about the MERN stack](https://www.youtube.com/watch?v=7CqJlxBYj-M),
-published by Beau Carnes for freeCodeCamp on May 29, 2019.
+published by Beau Carnes for [freeCodeCamp](www.freecodecamp.org) on May 29, 2019.
 
 # prerequisites
 These are mandatory for ANY React project, so we better check 'em all before start :
@@ -605,25 +605,28 @@ export default class ExerciseCreate extends Component {
 Then we insert proper behaviour for the initial population of the user list (*refreshed AT EVERY RELOAD of the page*)
 ```
   componentDidMount() {
-    axios.get('http://localhost:5000/users/')
+    // hideous fixed URL
+    axios.get('http://localhost:4202/users/')
       .then(res => {
         if (res.data.length > 0) {
           this.setState({
             users: res.data.map(user => user.username),
             username: res.data[0].username
           })
+        } else {
+        // plan B
+          this.setState({
+            users: [ "mario", "antonio", "giovanni", "giovanna", "carla", "silvia", "caterina", "margherita", "mariolina" ],
+            username: 'antonio'
+          });
         }
       })
       .catch(err => {
-        // plan B
-        this.setState({
-          users: [ "mario", "antonio", "giovanni", "giovanna", "carla", "silvia", "caterina", "margherita", "mariolina" ],
-          username: 'antonio'
-        });
+        console.log(err);
       });
   }
 ```
-Then we proceed to evolve the stub `src/components/exercises-list.component.js`:
+Then we proceed to evolve the stub `src/components/exercises-list.component.js` into something more useful :
 ```
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -706,7 +709,10 @@ export default class ExercisesList extends Component {
   }
 }
 ```
-And finally the `src/components/exercise-edit.component.js` component file, see how it's very similar to the **create** component :
+> usage of Links and anchors os not the best way here, delete should have been a button. Some refactoring suggested.
+
+And finally we promote the `src/components/exercise-edit.component.js` component file.
+> see how it's very similar to the **create component** ...
 ```
 import React, { Component } from 'react';
 import axios from 'axios';
