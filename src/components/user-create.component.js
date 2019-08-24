@@ -37,7 +37,7 @@ export default class UserCreate extends Component {
         console.log(res.data)
       });
 
-    // (temporary) empty the field for further input
+    // empty the field for further input
     this.setState({
       username: ''
     })

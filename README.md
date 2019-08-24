@@ -1,19 +1,22 @@
 # my-exercise-tracker
 This projects gathers all the info I learned following
-[this online tutorial](https://www.youtube.com/watch?v=7CqJlxBYj-M) about the MERN stack.
+[an online tutorial about the MERN stack](https://www.youtube.com/watch?v=7CqJlxBYj-M),
+published by Beau Carnes for freeCodeCamp on May 29, 2019.
 
-## Prerequisites
+# prerequisites
+These are mandatory for ANY React project, so we better check 'em all before start :
 * [mlab](https://mlab.com) account
-* [Github](https://github.com/github) account
 * database initialized [here](https://mlab.com/databases/mymongo/collections) 
+* [Github](https://github.com/github) account
 * Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
 * **node** and **npm** installed (`$ node -v`to check version)
-* nodemon installed (`$ npm install -g nodemon`)
-* yarn installed
-* Postman app installed (no `npm`, no `brew`, occorre fare download dal loro sito)
 * **create-react-app** installed
+* yarn installed
+* nodemon installed (`$ npm install -g nodemon`)
+* Postman app installed (no `npm`, no `brew`, you must download the app from their site)
+* VSCode IDE or a proper editor (I used Sublime here but I plan to install and use VSCode on the iMac also)
 
-## Kick off
+# kick off
 bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
 ```
 npm -g uninstall create-react-app
@@ -21,7 +24,7 @@ npx create-react-app my-exercise-tracker
 cd my-exercise-tracker
 ```
 Check that everything works using `yarn start` or `npm start`.
-## Git enablement
+# Git enablement
 initialize Git components
 ```
 git init
@@ -34,15 +37,18 @@ git commit -m "plain start"
 git push -u origin msster
 ```
 
-## backend
-Create the backend project ***inside*** the React app (not recommended)
+## App backend
+I created the backend project ***inside*** the React app (not recommended for real projects).
+
+> One big question arises when you think about making the front-end aware of the back-end URI.
+> How are we going to make the back-end URI configurable for the front-end ??? **WIP**
 ```
 mkdir backend
 cd backend
 npm init -y
 npm install express cors mongoose dotenv
 ```
-ensure that the `.gitignore` file contains `/backend/node_modules`
+ensure that the `.gitignore` file contains `/backend/node_modules`.
 
 Setup the backend environment in the `.env` file
 ```
@@ -443,7 +449,7 @@ export default class Navbar extends Component {
 }
 ```
 ### stub components
-To be able to test the application we need to put in place fake components like this `src/components/exercises-list.component.js`:
+To be able to test the application we begin by putting in place fake components, like this `src/components/exercises-list.component.js`:
 ```
 import React, { Component } from 'react';
 
@@ -457,20 +463,25 @@ export default class ExercisesList extends Component {
   }
 }
 ```
-So that we can now
+So that we can now test the overall behaviour of the application :
 ```
 npm run
-yarn build
+npm start
+yarn run build
 ```
 ### real components
 > In React components the **constructor** should always call `super()`
 
 > In React you never use `let` to declare variables. Variables are to be declared/defined in `Component.state` (see **constructor** below)
+> front-end components use the Axios library to make XmlHttp requests to the back-end.
+> the back-end can fill the response with text (*below you see that the feedback from back-end goes into the console*)
 
-Sample component with everything but the girl :
+Sample `src/components/exercise-create.component.js` component file, with everything but the girl :
 ```
 import React, { Component } from 'react';
-import DatePicker from 'react-datepicker';  // requires a specific stylesheet, so ...
+import axios from 'axios';
+import DatePicker from 'react-datepicker';  
+// datepicker requires a specific stylesheet ...
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default class ExerciseCreate extends Component {
@@ -520,13 +531,13 @@ export default class ExerciseCreate extends Component {
       duration: e.target.value
     });
   }
-  
+
   onChangeDate(date) {
     this.setState({
       date: date
     });
   }
-
+  
   onSubmit(e) {
     e.preventDefault(); // intercept React default behaviour
     const exercise = {
@@ -536,7 +547,13 @@ export default class ExerciseCreate extends Component {
       date: this.state.date
     }
     // temporary
-    console.log(exercise)
+    console.log(exercise);
+
+    // hideous hard-coded URL
+    axios.post('http://localhost:4202/exercises/add', exercise)
+      .then(res => {
+        console.log(res.data)
+      });
 
     window.location ='/';
   }
@@ -565,7 +582,7 @@ export default class ExerciseCreate extends Component {
           </div>
 
           <div className="form-group">
-            <label>Duration (in minutes): </label>
+            <label>Duration (minutes): </label>
             <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />         
           </div>
 
@@ -585,8 +602,262 @@ export default class ExerciseCreate extends Component {
   }
 }
 ```
-### connecting the front-end to the back-end
-The front-end user the Axios library to make XmlHttp requests to the back-end.
+Then we insert proper behaviour for the initial population of the user list (*refreshed AT EVERY RELOAD of the page*)
+```
+  componentDidMount() {
+    axios.get('http://localhost:5000/users/')
+      .then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            users: res.data.map(user => user.username),
+            username: res.data[0].username
+          })
+        }
+      })
+      .catch(err => {
+        // plan B
+        this.setState({
+          users: [ "mario", "antonio", "giovanni", "giovanna", "carla", "silvia", "caterina", "margherita", "mariolina" ],
+          username: 'antonio'
+        });
+      });
+  }
+```
+Then we proceed to evolve the stub `src/components/exercises-list.component.js`:
+```
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+// this file hosts here an additional React component
+// and this is a Functional React Component (suggested method since React Hooks, indeed)
+// Functional React components lacked state and constructor methods ...
+const Exercise = (props) => (
+      <tr>
+        <td>{props.exercise.username}</td>
+        <td>{props.exercise.description}</td>
+        <td>{props.exercise.duration}</td>
+        <td>{props.exercise.date.substring(0,10)}</td>
+        <td>
+          <Link to={"/edit/"+props.exercise._id}>edit</Link> | 
+          <a href="#" onClick={ () => { props.deleteExercise(props.exercise._id) } }> delete</a>
+        </td>
+      </tr>
+)
+
+// resuming here the straight exercises-list component
+export default class ExercisesList extends Component {
+  constructor(props) {
+    super(props);  // always in react 
+
+    // this event binding ... always in React
+    this.deleteExercise = this.deleteExercise.bind(this);
+
+    // class properties are in this.state
+    this.state = { exercises: [] }
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:4202/exercises/')
+      .then(res => {
+        if (res.data.length > 0) {
+          this.setState({ exercises: res.data })  // everything including telemetry fields ...
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  deleteExercise(id) {
+    axios.delete('http://localhost:4202/exercises/delete/' + id)
+      .then(res => console.log(res.data));
+    this.setState({
+      exercises: this.state.exercises.filter(el => el._id !== id)
+    })
+  }
+
+  exerciseList() {
+    return this.state.exercises.map(singleExercise => {
+      return <Exercise exercise={singleExercise} deleteExercise={this.deleteExercise} key={singleExercise._id} />;
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Logged Exercises ...</h1>
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+              <th>Username</th>
+              <th>Description</th>
+              <th>Duration</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.exerciseList() }
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+```
+And finally the `src/components/exercise-edit.component.js` component file, see how it's very similar to the **create** component :
+```
+import React, { Component } from 'react';
+import axios from 'axios';
+import DatePicker from 'react-datepicker';  // requires a specific stylesheet, so ...
+import 'react-datepicker/dist/react-datepicker.css';
+
+export default class ExerciseEdit extends Component {
+  constructor(props) {
+    super(props);  // always in react 
+
+    // this event binding ... always in React
+    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeDescription = this.onChangeDescription.bind(this);
+    this.onChangeDuration = this.onChangeDuration.bind(this);
+    this.onChangeDate = this.onChangeDate.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
+    // class properties are in this.state
+    // so initialization needs to happen like that (do not use 'var' or 'let')
+    this.state = {
+      username: '',
+      description: '',
+      duration: 0,
+      date: new Date(),
+      users: []  // initially empty, will be populated when componentDidMount
+    }
+  }
+
+  componentDidMount() {
+    // hideous fixed URL - gets current exercise
+    // TODO: unserstand why props.match.params and not simply props.params
+    axios.get('http://localhost:4202/exercises/'+this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          username: res.data.username,
+          description: res.data.description,
+          duration: res.data.duration,
+          date: new Date(res.data.date)
+          })
+        })
+      .catch(err => {
+        console.log(err);
+      });
+
+    // hideous fixed URL
+    axios.get('http://localhost:4202/users/')
+      .then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            users: res.data.map(user => user.username),
+          })
+        } else {
+        // plan B
+          this.setState({
+            users: [ "mario", "antonio", "giovanni", "giovanna", "carla", "silvia", "caterina", "margherita", "mariolina" ],
+            username: 'antonio'
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  onChangeUsername(e) {
+    this.setState({
+      username: e.target.value
+    });
+  }
+  
+  onChangeDescription(e) {
+    this.setState({
+      description: e.target.value
+    });
+  }
+  
+  onChangeDuration(e) {
+    this.setState({
+      duration: e.target.value
+    });
+  }
+
+  onChangeDate(date) {
+    this.setState({
+      date: date
+    });
+  }
+  
+  onSubmit(e) {
+    e.preventDefault(); // intercept React default behaviour
+    const exercise = {
+      username: this.state.username,
+      description: this.state.description,
+      duration: this.state.duration,
+      date: this.state.date
+    }
+    // temporary
+    console.log(exercise);
+
+    axios.post('http://localhost:4202/exercises/update/'+this.props.match.params.id, exercise) // hideous hard-coded URL
+      .then(res => {
+        console.log(res.data)
+      });
+
+    window.location ='/';
+  }
+  
+  render() {
+    return (
+      <div>
+        <h3>Edit Exercise</h3>
+        <form onSubmit={this.onSubmit}>
+
+          <div className="form-group">
+            <label>Username: </label>
+            <select ref="userInput" required className="form-control" value={this.state.username}
+              onChange={this.onChangeUsername}>
+              {
+                this.state.users.map(function(user) {
+                  return <option key={user} value={user}>{user}</option>;
+                })
+              }
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Description: </label>
+            <input type="text" required className="form-control" value={this.state.description} onChange={this.onChangeDescription} />         
+          </div>
+
+          <div className="form-group">
+            <label>Duration (minutes): </label>
+            <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />         
+          </div>
+
+          <div className="form-group">
+            <label>Date: </label>
+            <div>
+              <DatePicker selected={this.state.date} onChange={this.onChangeDate} />
+            </div>         
+          </div>
+
+          <div className="form-group">
+            <input type="submit" value="Update Exercise" className="btn btn-primary" />
+          </div>
+        </form>
+      </div>
+    );
+  }
+}
+```
 
 
 # React concepts

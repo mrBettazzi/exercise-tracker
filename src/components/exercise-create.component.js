@@ -26,11 +26,25 @@ export default class ExerciseCreate extends Component {
   }
 
   componentDidMount() {
-    // temporary
-    this.setState({
-      users: [ "mario", "antonio", "giovanni", "giovanna", "carla", "silvia", "caterina", "margherita", "mariolina" ],
-      username: 'antonio'
-    });
+    // hideous fixed URL
+    axios.get('http://localhost:4202/users/')
+      .then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            users: res.data.map(user => user.username),
+            username: res.data[0].username
+          })
+        } else {
+        // plan B
+          this.setState({
+            users: [ "mario", "antonio", "giovanni", "giovanna", "carla", "silvia", "caterina", "margherita", "mariolina" ],
+            username: 'antonio'
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   onChangeUsername(e) {
@@ -68,8 +82,7 @@ export default class ExerciseCreate extends Component {
     // temporary
     console.log(exercise);
 
-    // hideous hard-coded URL
-    axios.post('http://localhost:4202/exercise/add', exercise)
+    axios.post('http://localhost:4202/exercises/add', exercise) // hideous hard-coded URL
       .then(res => {
         console.log(res.data)
       });
