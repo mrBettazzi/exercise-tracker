@@ -448,6 +448,12 @@ export default App;
 ```
 ### Components[^](#app-frontend)
 And now we design the single React components.
+* [Navigation Bar](#navbar)
+* [Stub components](#stub-components)
+* [Create](#create-component)
+* [Edit](#edit-component)
+* [List](#list-component)
+
 #### Navbar[^](#components)
 Source file is `src/components/navbar.component.js`
 ```
