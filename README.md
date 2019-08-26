@@ -21,7 +21,7 @@ These are mandatory for ANY React project, so we better check 'em all before sta
 * Postman app installed (no `npm`, no `brew`, you must download the app from their site)
 * VSCode IDE or a proper editor (I used Sublime here but I plan to install and use VSCode on the iMac also)
 
-### kick off
+### kick off [^](#prerequisites)
 bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
 ```
 npm -g uninstall create-react-app
@@ -29,7 +29,7 @@ npx create-react-app my-exercise-tracker
 cd my-exercise-tracker
 ```
 Check that everything works using `yarn start` or `npm start`.
-### Git enablement
+### Git enablement [^](#prerequisites)
 initialize Git components
 ```
 git init
@@ -42,8 +42,7 @@ git commit -m "plain start"
 git push -u origin msster
 ```
 
-## App backend
-[up](#my-exercise-tracker)
+## App backend [^](#my-exercise-tracker)
 I created the backend project ***inside*** the React app (not recommended for real projects).
 
 > One big question arises when you think about making the front-end aware of the back-end URI.
@@ -67,7 +66,7 @@ PORT=4202
 * [routing](#routing)
 * [putting everything to work](#completion)
 
-### BASIC server
+### BASIC server [^](#app-backend)
 Prepare a BASIC `server.js` file to check that everything works
 ```
 const express = require ('express');
@@ -100,7 +99,7 @@ cd backend
 nodemon server.js
 ```
 
-### Database interface
+### Database interface [^](#app-backend)
 The models are to be written in a dedicated directory.
 Models will be linked to the application using **routing**
 ```
@@ -146,7 +145,7 @@ const exerciseSchema = new Schema({
 const Exercise = mongoose.model('Exercise', exerciseSchema);
 module.exports = Exercise;
 ```
-### Routing
+### Routing [^](#app-backend)
 Routing goes in a separate directory:
 ```
 mkdir backend/routes
@@ -232,7 +231,7 @@ router.route('/update/:id').post((req,res) => {
 module.exports = router;
 ```
 
-### Completion
+### Completion [^](#app-backend)
 Complete the `server.js` file :
 ```
 ... (previous lines)
@@ -277,8 +276,7 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 ```
 
 
-## App frontend
-[up](#my-exercise-tracker)
+## App frontend [^](#my-exercise-tracker)
 Make sure you have installed required components
 ```
 npm install bootstrap react-router-dom react-datepicker axios
@@ -288,7 +286,7 @@ npm install bootstrap react-router-dom react-datepicker axios
 [app.js](#app-js)
 [visual components](#components)
 
-### index html
+### index html [^](#app-frontend)
 Starting point is `public/index.html`. The **root** div is where the React application will be put to use.
 The original template provided by *create-react-app* was this ...
 ```
@@ -359,7 +357,7 @@ We don't need manifest neither comments, so after some simplification and custom
   </body>
 </html>
 ```
-### index js
+### index js [^](#app-frontend)
 Next important file is `src/index.js`
 *IT IS CALLED IN SOME WAY THAT I DON'T YET UNDERSTAND BY REACT*.
 This is the original version :
@@ -416,7 +414,7 @@ export default App;
 ```
 Note that it invokes `src/App.js`.
 
-### App js
+### App js [^](#app-frontend)
 In the `src/App.js` file we will break down the entire application into visual components.
 In the following code : *Navbar*, *ExercisesList* etc. are all visual components.
 Routing consists in matching request addresses with specific components.
@@ -448,9 +446,9 @@ function App() {
 
 export default App;
 ```
-### Components
+### Components [^](#app-frontend)
 And now we design the single React components.
-#### Navbar
+#### Navbar [^](#components)
 Source file is `src/components/navbar.component.js`
 ```
 import React, { Component } from 'react';
@@ -473,7 +471,7 @@ export default class Navbar extends Component {
   }
 }
 ```
-#### stub components
+#### stub components [^](#components)
 To be able to test the application we begin by putting in place fake components,
 one stub component for each route defined in `App.js`.
 See for instance this stub version of `src/components/exercises-list.component.js`:
@@ -496,7 +494,7 @@ npm run
 npm start
 yarn run build
 ```
-#### real components
+#### real components [^](#components)
 > In React components the **constructor** should always call `super()`
 
 > In React you never use `let` to declare variables. Variables are to be declared/defined in `Component.state` (see **constructor** below)
@@ -506,7 +504,7 @@ yarn run build
 [list](#list-component)
 [edit](#edit-component)
 
-#### create component
+#### create component [^](#real-components)
 Sample `src/components/exercise-create.component.js` component file, with everything but the girl :
 ```
 import React, { Component } from 'react';
@@ -657,7 +655,7 @@ Then we insert proper behaviour for the initial population of the user list (*re
       });
   }
 ```
-#### list component
+#### list component [^](#real-components)
 Then we proceed to evolve the stub `src/components/exercises-list.component.js` into something more useful.
 Note that the list component renders a table, so the file contains also the definition of another, separate React component for the table row (*not a class but a function*).
 ```
@@ -744,7 +742,7 @@ export default class ExercisesList extends Component {
 ```
 > usage of Links and anchors os not the best way here, delete should have been a button. Some refactoring suggested.
 
-#### edit component
+#### edit component [^](#real-components)
 Finally we promote the `src/components/exercise-edit.component.js` component file.
 > see how it's very similar to the **create component** ...
 ```
@@ -900,8 +898,7 @@ export default class ExerciseEdit extends Component {
 ```
 
 
-# React concepts
-[up](#my-exercise-tracker)
+# React concepts [^](#my-exercise-tracker)
 ## a basic Component
 (This is what I want to see on the screen)
 The pseudo-HTML is JSX, a Javascript dialect that is unbeknownst by the browser.
