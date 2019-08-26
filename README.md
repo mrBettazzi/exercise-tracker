@@ -8,7 +8,7 @@ published by Beau Carnes for [freeCodeCamp](www.freecodecamp.org) on May 29, 201
 * [frontend](#app-frontend)
 * [amenities](#react-concepts)
 
-## prerequisites [up](#)
+## prerequisites
 These are mandatory for ANY React project, so we better check 'em all before start :
 * [mlab](https://mlab.com) account
 * database initialized [here](https://mlab.com/databases/mymongo/collections)
@@ -21,7 +21,7 @@ These are mandatory for ANY React project, so we better check 'em all before sta
 * Postman app installed (no `npm`, no `brew`, you must download the app from their site)
 * VSCode IDE or a proper editor (I used Sublime here but I plan to install and use VSCode on the iMac also)
 
-### kick off [up]
+### kick off
 bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
 ```
 npm -g uninstall create-react-app
@@ -42,7 +42,8 @@ git commit -m "plain start"
 git push -u origin msster
 ```
 
-## App backend [up](#)
+## App backend
+[up](# my-exercise-tracker)
 I created the backend project ***inside*** the React app (not recommended for real projects).
 
 > One big question arises when you think about making the front-end aware of the back-end URI.
@@ -275,7 +276,8 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 ```
 
 
-## App frontend [up](#)
+## App frontend
+[up](# my-exercise-tracker)
 Make sure you have installed required components
 ```
 npm install bootstrap react-router-dom react-datepicker axios
@@ -897,7 +899,8 @@ export default class ExerciseEdit extends Component {
 ```
 
 
-# React concepts [up](#)
+# React concepts
+[up](# my-exercise-tracker)
 ## a basic Component
 (This is what I want to see on the screen)
 The pseudo-HTML is JSX, a Javascript dialect that is unbeknownst by the browser.
