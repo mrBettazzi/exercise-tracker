@@ -510,7 +510,7 @@ yarn run build
 [list](#list-component)
 [edit](#edit-component)
 
-#### create component[^](#real-components)
+#### create component[^](#components)
 Sample `src/components/exercise-create.component.js` component file, with everything but the girl :
 ```
 import React, { Component } from 'react';
@@ -661,7 +661,7 @@ Then we insert proper behaviour for the initial population of the user list (*re
       });
   }
 ```
-#### list component[^](#real-components)
+#### list component[^](#components)
 Then we proceed to evolve the stub `src/components/exercises-list.component.js` into something more useful.
 Note that the list component renders a table, so the file contains also the definition of another, separate React component for the table row (*not a class but a function*).
 ```
@@ -748,7 +748,7 @@ export default class ExercisesList extends Component {
 ```
 > usage of Links and anchors os not the best way here, delete should have been a button. Some refactoring suggested.
 
-#### edit component[^](#real-components)
+#### edit component[^](#components)
 Finally we promote the `src/components/exercise-edit.component.js` component file.
 > see how it's very similar to the **create component** ...
 ```
