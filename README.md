@@ -8,7 +8,7 @@ published by Beau Carnes for [freeCodeCamp](www.freecodecamp.org) on May 29, 201
 * [frontend](#app-frontend)
 * [amenities](#react-concepts)
 
-## prerequisites
+## prerequisites [up](#)
 These are mandatory for ANY React project, so we better check 'em all before start :
 * [mlab](https://mlab.com) account
 * database initialized [here](https://mlab.com/databases/mymongo/collections)
@@ -21,7 +21,7 @@ These are mandatory for ANY React project, so we better check 'em all before sta
 * Postman app installed (no `npm`, no `brew`, you must download the app from their site)
 * VSCode IDE or a proper editor (I used Sublime here but I plan to install and use VSCode on the iMac also)
 
-### kick off
+### kick off [up]
 bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
 ```
 npm -g uninstall create-react-app
@@ -42,16 +42,12 @@ git commit -m "plain start"
 git push -u origin msster
 ```
 
-## App backend
+## App backend [up](#)
 I created the backend project ***inside*** the React app (not recommended for real projects).
 
 > One big question arises when you think about making the front-end aware of the back-end URI.
 > How are we going to make the back-end URI configurable for the front-end ??? **WIP**
 
-[server](#basic-server)
-[database](#database-interface)
-[routing](#routing)
-[putting everything to work](#completion)
 ```
 mkdir backend
 cd backend
@@ -65,6 +61,10 @@ Setup the backend environment in the `.env` file
 DB_URI=mongodb://user:password@ds063919.mlab.com:63919/mymongo
 PORT=4202
 ```
+* [server](#basic-server)
+* [database](#database-interface)
+* [routing](#routing)
+* [putting everything to work](#completion)
 
 ### BASIC server
 Prepare a BASIC `server.js` file to check that everything works
@@ -275,7 +275,7 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 ```
 
 
-## App frontend
+## App frontend [up](#)
 Make sure you have installed required components
 ```
 npm install bootstrap react-router-dom react-datepicker axios
@@ -897,7 +897,7 @@ export default class ExerciseEdit extends Component {
 ```
 
 
-# React concepts
+# React concepts [up](#)
 ## a basic Component
 (This is what I want to see on the screen)
 The pseudo-HTML is JSX, a Javascript dialect that is unbeknownst by the browser.
