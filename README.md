@@ -281,10 +281,10 @@ Make sure you have installed required components
 ```
 npm install bootstrap react-router-dom react-datepicker axios
 ```
-* [index.html](#index-html-)
-* [index.js](#index-js-)
-* [app.js](#app-js-)
-* [visual components](#components-)
+* [index.html](#index-html)
+* [index.js](#index-js)
+* [app.js](#app-js)
+* [visual components](#components)
 
 ### index html[^](#app-frontend)
 Starting point is `public/index.html`. The **root** div is where the React application will be put to use.
