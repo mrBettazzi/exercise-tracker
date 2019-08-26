@@ -3,10 +3,15 @@ This projects gathers all the info I learned following
 [an online tutorial about the MERN stack](https://www.youtube.com/watch?v=7CqJlxBYj-M),
 published by Beau Carnes for [freeCodeCamp](www.freecodecamp.org) on May 29, 2019.
 
-# prerequisites
+[prerequisites](#prerequisites)
+[backend](#app-backend)
+[frontend](#app-frontend)
+[amenities](#amenities)
+
+## prerequisites
 These are mandatory for ANY React project, so we better check 'em all before start :
 * [mlab](https://mlab.com) account
-* database initialized [here](https://mlab.com/databases/mymongo/collections) 
+* database initialized [here](https://mlab.com/databases/mymongo/collections)
 * [Github](https://github.com/github) account
 * Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
 * **node** and **npm** installed (`$ node -v`to check version)
@@ -16,7 +21,7 @@ These are mandatory for ANY React project, so we better check 'em all before sta
 * Postman app installed (no `npm`, no `brew`, you must download the app from their site)
 * VSCode IDE or a proper editor (I used Sublime here but I plan to install and use VSCode on the iMac also)
 
-# kick off
+### kick off
 bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
 ```
 npm -g uninstall create-react-app
@@ -24,7 +29,7 @@ npx create-react-app my-exercise-tracker
 cd my-exercise-tracker
 ```
 Check that everything works using `yarn start` or `npm start`.
-# Git enablement
+### Git enablement
 initialize Git components
 ```
 git init
@@ -42,6 +47,11 @@ I created the backend project ***inside*** the React app (not recommended for re
 
 > One big question arises when you think about making the front-end aware of the back-end URI.
 > How are we going to make the back-end URI configurable for the front-end ??? **WIP**
+
+[server](#basic-server)
+[database](#database-interface)
+[routing](#routing)
+[putting everything to work](#completion)
 ```
 mkdir backend
 cd backend
@@ -56,7 +66,7 @@ DB_URI=mongodb://user:password@ds063919.mlab.com:63919/mymongo
 PORT=4202
 ```
 
-### BASIC `server.js`
+### BASIC server
 Prepare a BASIC `server.js` file to check that everything works
 ```
 const express = require ('express');
@@ -161,7 +171,7 @@ router.route('/add').post((req, res) => {
 
 module.exports = router;
 ```
-Prepare the `backend/routes/exercisesRouter.js` file. 
+Prepare the `backend/routes/exercisesRouter.js` file.
 This file is richer and contains all the needed CRUD logic
 ```
 const router = require('express').Router();
@@ -220,10 +230,10 @@ router.route('/update/:id').post((req,res) => {
 
 module.exports = router;
 
+### Completion
+Complete the `server.js` file :
 ```
-Complete the `server.js` file
-```
-...
+... (previous lines)
 
 const uri = process.env.DB_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
@@ -241,16 +251,17 @@ app.use('/users', usersRouter);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
 ```
-Now run again the backend app
+
+Now run again the backend app :
 ```
 cd backend
 nodemon server.js
 ```
-Then you can use Postman to test the API endpoints :
+Use Postman to test the API endpoints.
+Below some invocation samples :
 ```
-localhost:4202/users/add 
+localhost:4202/users/add
 { "username": "John" }
 
 localhost:4202/exercises/add
@@ -264,12 +275,17 @@ localhost:4202/exercises/update/5d5d63e48695740ad00a74f2
 ```
 
 
-
-## frontend
+## App frontend
 Make sure you have installed required components
 ```
 npm install bootstrap react-router-dom react-datepicker axios
 ```
+[index.html](#index-html)
+[index.js](#index-js)
+[app.js](#app-js)
+[visual components](#components)
+
+### index html
 Starting point is `public/index.html`. The **root** div is where the React application will be put to use.
 The original template provided by *create-react-app* was this ...
 ```
@@ -340,7 +356,9 @@ We don't need manifest neither comments, so after some simplification and custom
   </body>
 </html>
 ```
-Next important file is `src/index.js` *CALLED IN SOME WAY THAT I DON'T YET UNDERSTAND BY Node.js*.
+### index js
+Next important file is `src/index.js`
+*IT IS CALLED IN SOME WAY THAT I DON'T YET UNDERSTAND BY REACT*.
 This is the original version :
 ```
 import React from 'react';
@@ -356,9 +374,8 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 ```
-Note that it invokes `src/App.js`. 
-We don't need neither specific `.css` files here, nor *serviceWorker*, 
-so for our scope `src/index.js`can be trimmed down this way :
+We don't need neither specific `.css` files here, nor *serviceWorker*,
+so for our scope `src/index.js` is trimmed down this way :
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -394,8 +411,12 @@ function App() {
 
 export default App;
 ```
+Note that it invokes `src/App.js`.
+
+### App js
 In the `src/App.js` file we will break down the entire application into visual components.
-In the following sample, *Navbar*, *ExercisesList* etc. are all visual components.
+In the following code : *Navbar*, *ExercisesList* etc. are all visual components.
+Routing consists in matching request addresses with specific components.
 The **BrowserRouter** library makes it easy to manage routing (opening and closing specific components based on the requested address)
 this is how `src/App.js`looks like after initial customization :
 ```
@@ -424,8 +445,9 @@ function App() {
 
 export default App;
 ```
+### Components
 And now we design the single React components.
-### Navbar
+#### Navbar
 Source file is `src/components/navbar.component.js`
 ```
 import React, { Component } from 'react';
@@ -448,8 +470,10 @@ export default class Navbar extends Component {
   }
 }
 ```
-### stub components
-To be able to test the application we begin by putting in place fake components, like this `src/components/exercises-list.component.js`:
+#### stub components
+To be able to test the application we begin by putting in place fake components,
+one stub component for each route defined in `App.js`.
+See for instance this stub version of `src/components/exercises-list.component.js`:
 ```
 import React, { Component } from 'react';
 
@@ -469,24 +493,28 @@ npm run
 npm start
 yarn run build
 ```
-### real components
+#### real components
 > In React components the **constructor** should always call `super()`
 
 > In React you never use `let` to declare variables. Variables are to be declared/defined in `Component.state` (see **constructor** below)
 > front-end components use the Axios library to make XmlHttp requests to the back-end.
 > the back-end can fill the response with text (*below you see that the feedback from back-end goes into the console*)
+[create](#create-component)
+[list](#list-component)
+[edit](#edit-component)
 
+#### create component
 Sample `src/components/exercise-create.component.js` component file, with everything but the girl :
 ```
 import React, { Component } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';  
+import DatePicker from 'react-datepicker';
 // datepicker requires a specific stylesheet ...
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default class ExerciseCreate extends Component {
   constructor(props) {
-    super(props);  // always in react 
+    super(props);  // always in react
 
     // this event binding ... always in React
     this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -519,13 +547,13 @@ export default class ExerciseCreate extends Component {
       username: e.target.value
     });
   }
-  
+
   onChangeDescription(e) {
     this.setState({
       description: e.target.value
     });
   }
-  
+
   onChangeDuration(e) {
     this.setState({
       duration: e.target.value
@@ -537,7 +565,7 @@ export default class ExerciseCreate extends Component {
       date: date
     });
   }
-  
+
   onSubmit(e) {
     e.preventDefault(); // intercept React default behaviour
     const exercise = {
@@ -557,7 +585,7 @@ export default class ExerciseCreate extends Component {
 
     window.location ='/';
   }
-  
+
   render() {
     return (
       <div>
@@ -578,19 +606,19 @@ export default class ExerciseCreate extends Component {
 
           <div className="form-group">
             <label>Description: </label>
-            <input type="text" required className="form-control" value={this.state.description} onChange={this.onChangeDescription} />         
+            <input type="text" required className="form-control" value={this.state.description} onChange={this.onChangeDescription} />
           </div>
 
           <div className="form-group">
             <label>Duration (minutes): </label>
-            <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />         
+            <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />
           </div>
 
           <div className="form-group">
             <label>Date: </label>
             <div>
               <DatePicker selected={this.state.date} onChange={this.onChangeDate} />
-            </div>         
+            </div>
           </div>
 
           <div className="form-group">
@@ -626,7 +654,9 @@ Then we insert proper behaviour for the initial population of the user list (*re
       });
   }
 ```
-Then we proceed to evolve the stub `src/components/exercises-list.component.js` into something more useful :
+#### list component
+Then we proceed to evolve the stub `src/components/exercises-list.component.js` into something more useful.
+Note that the list component renders a table, so the file contains also the definition of another, separate React component for the table row (*not a class but a function*).
 ```
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -642,7 +672,7 @@ const Exercise = (props) => (
         <td>{props.exercise.duration}</td>
         <td>{props.exercise.date.substring(0,10)}</td>
         <td>
-          <Link to={"/edit/"+props.exercise._id}>edit</Link> | 
+          <Link to={"/edit/"+props.exercise._id}>edit</Link> |
           <a href="#" onClick={ () => { props.deleteExercise(props.exercise._id) } }> delete</a>
         </td>
       </tr>
@@ -651,7 +681,7 @@ const Exercise = (props) => (
 // resuming here the straight exercises-list component
 export default class ExercisesList extends Component {
   constructor(props) {
-    super(props);  // always in react 
+    super(props);  // always in react
 
     // this event binding ... always in React
     this.deleteExercise = this.deleteExercise.bind(this);
@@ -711,7 +741,8 @@ export default class ExercisesList extends Component {
 ```
 > usage of Links and anchors os not the best way here, delete should have been a button. Some refactoring suggested.
 
-And finally we promote the `src/components/exercise-edit.component.js` component file.
+#### edit component
+Finally we promote the `src/components/exercise-edit.component.js` component file.
 > see how it's very similar to the **create component** ...
 ```
 import React, { Component } from 'react';
@@ -721,7 +752,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class ExerciseEdit extends Component {
   constructor(props) {
-    super(props);  // always in react 
+    super(props);  // always in react
 
     // this event binding ... always in React
     this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -782,13 +813,13 @@ export default class ExerciseEdit extends Component {
       username: e.target.value
     });
   }
-  
+
   onChangeDescription(e) {
     this.setState({
       description: e.target.value
     });
   }
-  
+
   onChangeDuration(e) {
     this.setState({
       duration: e.target.value
@@ -800,7 +831,7 @@ export default class ExerciseEdit extends Component {
       date: date
     });
   }
-  
+
   onSubmit(e) {
     e.preventDefault(); // intercept React default behaviour
     const exercise = {
@@ -819,7 +850,7 @@ export default class ExerciseEdit extends Component {
 
     window.location ='/';
   }
-  
+
   render() {
     return (
       <div>
@@ -840,19 +871,19 @@ export default class ExerciseEdit extends Component {
 
           <div className="form-group">
             <label>Description: </label>
-            <input type="text" required className="form-control" value={this.state.description} onChange={this.onChangeDescription} />         
+            <input type="text" required className="form-control" value={this.state.description} onChange={this.onChangeDescription} />
           </div>
 
           <div className="form-group">
             <label>Duration (minutes): </label>
-            <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />         
+            <input type="text" required className="form-control" value={this.state.duration} onChange={this.onChangeDuration} />
           </div>
 
           <div className="form-group">
             <label>Date: </label>
             <div>
               <DatePicker selected={this.state.date} onChange={this.onChangeDate} />
-            </div>         
+            </div>
           </div>
 
           <div className="form-group">
@@ -889,12 +920,12 @@ class ShoppingList extends React.Component {
   }
 }
 ```
-This component can be used in an HTML page : 
+This component can be used in an HTML page :
 ```
 <ShoppingList name="Paolo" />
 ```
 
-# previous text from **create-react-app**
+## previous text from **create-react-app**
 ### `npm start`
 Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
