@@ -22,7 +22,9 @@ These are mandatory for ANY React project, so we better check 'em all before sta
 * VSCode IDE or a proper editor (I used Sublime here but I plan to install and use VSCode on the iMac also)
 
 ### kick off[^](#prerequisites)
-bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app)
+bootstrap the React project with [Create React App](https://github.com/facebook/create-react-app).
+* remove any global `create-react-app` installation
+* use `npx` not `npm` to bootstrap the project.
 ```
 npm -g uninstall create-react-app
 npx create-react-app my-exercise-tracker
@@ -52,9 +54,13 @@ I created the backend project ***inside*** the React app (not recommended for re
 mkdir backend
 cd backend
 npm init -y
-npm install express cors mongoose dotenv
+npm install express nodemon cors mongoose dotenv
 ```
-ensure that the `.gitignore` file contains `/backend/node_modules`.
+or
+```
+yarn add express nodemon cors mongoose dotenv
+```
+Ensure that the `.gitignore` file contains `/backend/node_modules` and `.env`.
 
 Setup the backend environment in the `.env` file
 ```
@@ -70,23 +76,40 @@ PORT=4202
 Prepare a BASIC `server.js` file to check that everything works
 ```
 const express = require ('express');
+const app = express();
+
 const cors = require('cors');
 const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const app = express();
+const uri = process.env.DB_URI;
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+// older versions of Express required
+// app.use(bodyParser.urlencoded({extended:true}));
+// app.use(bodyParser.json());
 
-const uri = process.env.DB_URI;
+// one method
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log(`MongoDB database connection established successfully`);
 })
+
+// another method
+// mongoose.connect(uri)
+// 	.then(
+// 		() => {
+// console.log(`MongoDB database connection established successfully`)
+// 		},
+// 		err => {
+// 			console.log(`Can not connect to MongoDB database ` + err)
+// 		}
+// 	);
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -97,6 +120,10 @@ Run the backend app
 ```
 cd backend
 nodemon server.js
+```
+oppure
+```
+nodemon backend/server
 ```
 
 ### Database interface[^](#app-backend)
@@ -124,6 +151,10 @@ const userSchema = new Schema({
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
+```
+Last line could have been
+```
+const module.exports = mongoose.model('User', userSchema);
 ```
 Prepare the `backend/models/exercise.model.js` file (*see how models are always more or less the same*)
 ```
@@ -281,6 +312,11 @@ Make sure you have installed required components
 ```
 npm install bootstrap react-router-dom react-datepicker axios
 ```
+oppure
+```
+yarn add bootstrap react-router-dom react-datepicker axios
+```
+
 * [index.html](#index-html)
 * [index.js](#index-js)
 * [app.js](#app-js)
@@ -376,14 +412,15 @@ ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
 ```
 We don't need neither specific `.css` files here, nor *serviceWorker*,
-so for our scope `src/index.js` is trimmed down this way :
+so for our scope `src/index.js` is trimmed down.
+The `render()` function will inject into the **root** div the outputs provided by `App.js`.
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
-Now comes `src/App.js` - this is the original version :
+Now comes `src/App.js` - this was the original **Reactjs** version :
 ```
 import React from 'react';
 import logo from './logo.svg';
@@ -418,7 +455,7 @@ Note that it invokes `src/App.js`.
 In the `src/App.js` file we will break down the entire application into visual components.
 In the following code : *Navbar*, *ExercisesList* etc. are all visual components.
 Routing consists in matching request addresses with specific components.
-The **BrowserRouter** library makes it easy to manage routing (opening and closing specific components based on the requested address)
+The **BrowserRouter** library makes it easy to manage routing (opening and closing specific components based on the requested address).
 this is how `src/App.js`looks like after initial customization :
 ```
 import React from 'react';
@@ -436,16 +473,18 @@ function App() {
     <Router>
       <Navbar />
       <br />
-      <Route path "/" exact component={ExercisesList} />
-      <Route path "/edit/:id" component={ExerciseEdit} />
-      <Route path "/create" component={ExerciseCreate} />
-      <Route path "/user" component={UserCreate} />
+      <Route exact path "/" component={ExercisesList} />
+      <Route       path "/edit/:id" component={ExerciseEdit} />
+      <Route       path "/create" component={ExerciseCreate} />
+      <Route       path "/user" component={UserCreate} />
     </Router>
   );
 }
 
 export default App;
 ```
+> Note that `import "bootstrap/dist/css/bootstrap.min.css";` is equivalent to `import '../node_modules/bootstrap/dist/css/bootstrap.min.css';`
+> Note that `import "bootstrap/dist/css/bootstrap.min.css";` in other tutorials is put into `index.js` (importing `App.js`)
 ### Components[^](#app-frontend)
 And now we design the single React components.
 * [Navigation Bar](#navbar)
@@ -487,8 +526,8 @@ import React, { Component } from 'react';
 export default class ExercisesList extends Component {
   render() {
     return (
-      <div>
-        <p>You are on the Exercises List component ...</p>
+      <div style={{marginTop: 50}}>
+        <p>This is the ExercisesList component ...</p>
       </div>
     );
   }
@@ -511,7 +550,74 @@ yarn run build
 [edit](#edit-component)
 
 #### create component[^](#components)
-Sample `src/components/exercise-create.component.js` component file, with everything but the girl :
+Basic version in `src/components/user-create.component.js` file :
+```
+import React, { Component } from 'react';
+import axios from 'axios';
+
+export default class UserCreate extends Component {
+
+  constructor(props) {
+    super(props);  // always in react
+
+    // this event binding ... always in React
+    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
+    // class properties are in this.state
+    // so initialization needs to happen like that (do not use 'var' or 'let')
+    this.state = {
+      username: '',
+    }
+  }
+
+ onChangeUsername(e) {
+    this.setState({
+      username: e.target.value
+    });
+  }
+
+  onSubmit(e) {
+    e.preventDefault(); // intercept React default behaviour
+    const user = {
+      username: this.state.username,
+    }
+    // temporary
+    console.log(user);
+
+    // hideous hard-coded URL
+    axios.post('http://localhost:4202/users/add', user)
+      .then(res => {
+        console.log(res.data)
+      });
+
+    // empty the field for further input
+    this.setState({
+      username: ''
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Create New User</h3>
+        <form onSubmit={this.onSubmit}>
+
+          <div className="form-group">
+            <label>Username: </label>
+            <input type="text" required className="form-control" value={this.state.username} onChange={this.onChangeUsername} />
+          </div>
+
+          <div className="form-group">
+            <input type="submit" value="Create User" className="btn btn-primary" />
+          </div>
+        </form>
+      </div>
+    );
+  }
+}
+```
+Advanced version in `src/components/exercise-create.component.js` file, with everything but the kitchen sink :
 ```
 import React, { Component } from 'react';
 import axios from 'axios';
@@ -521,9 +627,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class ExerciseCreate extends Component {
   constructor(props) {
-    super(props);  // always in react
+    // super() ... always needed in React
+    super(props);
 
-    // this event binding ... always in React
+    // this event binding ... always needed in React
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
