@@ -1,7 +1,7 @@
 # my-exercise-tracker
 This projects gathers all the info I learned following
 [an online tutorial about the MERN stack](https://www.youtube.com/watch?v=7CqJlxBYj-M),
-published by Beau Carnes for [freeCodeCamp](www.freecodecamp.org) on May 29, 2019.
+published by Beau Carnes for [freeCodeCamp](https://www.freecodecamp.org) on May 29, 2019.
 
 * [prerequisites](#prerequisites)
 * [backend](#app-backend)
