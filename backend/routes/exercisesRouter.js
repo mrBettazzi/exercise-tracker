@@ -7,6 +7,21 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/list').get((req, res) => {
+  // from https://stackoverflow.com/questions/48628983/how-do-i-efficiently-pass-multiple-req-query-values-from-express-to-mongoose
+  let query = Object.keys(req.query).reduce( (mappedQuery, key) => {
+    let param = req.query[key]
+    if (param) {
+      mappedQuery[key] = param
+    }
+    return mappedQuery
+  }, {})
+  
+  Exercise.find(query) // could have been 
+    .then(exercises => res.json(exercises))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const description = req.body.description;
