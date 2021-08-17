@@ -10,8 +10,9 @@ published by Beau Carnes for [freeCodeCamp](https://www.freecodecamp.org) on May
 
 ## prerequisites
 These are mandatory for ANY React project, so we better check 'em all before start :
-* [mlab](https://mlab.com) account
-* database initialized [here](https://mlab.com/databases/mymongo/collections)
+* [mlab](https://mlab.com) account (abandoned 2020)
+ or * [mongo atlas](https://cloud.mongodb.com) account
+* *mymongo* database initialized [here](https://cloud.mongodb.com/v2/5f5e09744e71c271bb765d8b#clusters)
 * [Github](https://github.com/github) account
 * Git project initialized [here](https://github.com/mrBettazzi/exercise-tracker)
 * **node** and **npm** installed (`$ node -v`to check version)
@@ -121,7 +122,7 @@ Run the backend app
 cd backend
 nodemon server.js
 ```
-oppure
+oppure (in base a dove è registrato il file **.env** contenente la URI) :
 ```
 nodemon backend/server
 ```
@@ -396,7 +397,7 @@ We don't need manifest neither comments, so after some simplification and custom
 ### index js[^](#app-frontend)
 Next important file is `src/index.js`
 *IT IS CALLED IN SOME WAY THAT I DON'T YET UNDERSTAND BY REACT*.
-This is the original version :
+This is the original version (note how it invokes `src/App.js`) :
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -413,7 +414,7 @@ serviceWorker.unregister();
 ```
 We don't need neither specific `.css` files here, nor *serviceWorker*,
 so for our scope `src/index.js` is trimmed down.
-The `render()` function will inject into the **root** div the outputs provided by `App.js`.
+The `render()` function will inject into the **root** div of `index.html` the outputs provided by `App.js`.
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -449,7 +450,6 @@ function App() {
 
 export default App;
 ```
-Note that it invokes `src/App.js`.
 
 ### App js[^](#app-frontend)
 In the `src/App.js` file we will break down the entire application into visual components.
