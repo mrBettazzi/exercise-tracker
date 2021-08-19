@@ -67,6 +67,9 @@ Setup the backend environment in the `.env` file
 ```
 DB_URI=mongodb://user:password@ds063919.mlab.com:63919/mymongo
 PORT=4202
+ATLAS_DB_URI=mongodb+srv://scott:tiger@mymongo.mdsyy.mongodb.net/mymongo?retryWrites=true&w=majority
+MLAB_DB_URI=mongodb://scott:tiger@ds063919.mlab.com:63919/mymongo
+LOCAL_DB_URI=mongodb://localhost:27017/test
 ```
 * [server](#basic-server)
 * [database](#database-interface)
@@ -421,6 +424,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
+Note that it imports `src/App.js`
+
+### App js[^](#app-frontend)
 Now comes `src/App.js` - this was the original **Reactjs** version :
 ```
 import React from 'react';
@@ -450,8 +456,6 @@ function App() {
 
 export default App;
 ```
-
-### App js[^](#app-frontend)
 In the `src/App.js` file we will break down the entire application into visual components.
 In the following code : *Navbar*, *ExercisesList* etc. are all visual components.
 Routing consists in matching request addresses with specific components.
@@ -483,15 +487,15 @@ function App() {
 
 export default App;
 ```
-> Note that `import "bootstrap/dist/css/bootstrap.min.css";` is equivalent to `import '../node_modules/bootstrap/dist/css/bootstrap.min.css';`
-> Note that `import "bootstrap/dist/css/bootstrap.min.css";` in other tutorials is put into `index.js` (importing `App.js`)
+> Note that `import "bootstrap/dist/css/bootstrap.min.css";` is equivalent to `import '../node_modules/bootstrap/dist/css/bootstrap.min.css';`.
+> Note that `import "bootstrap/dist/css/bootstrap.min.css";` in another tutorial is put into `index.js` (importing `App.js`)
 ### Components[^](#app-frontend)
 And now we design the single React components.
 * [Navigation Bar](#navbar)
 * [Stub components](#stub-components)
 * [Create](#create-component)
-* [Edit](#edit-component)
 * [List](#list-component)
+* [Edit](#edit-component)
 
 #### Navbar[^](#components)
 Source file is `src/components/navbar.component.js`
@@ -545,9 +549,9 @@ yarn run build
 > In React you never use `let` to declare variables. Variables are to be declared/defined in `Component.state` (see **constructor** below)
 > front-end components use the Axios library to make XmlHttp requests to the back-end.
 > the back-end can fill the response with text (*below you see that the feedback from back-end goes into the console*)
-[create](#create-component)
-[list](#list-component)
-[edit](#edit-component)
+[create an user](#create-component)
+[list exercises](#list-component)
+[edit an exercise](#edit-component)
 
 #### create component[^](#components)
 Basic version in `src/components/user-create.component.js` file :
