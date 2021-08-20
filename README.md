@@ -45,6 +45,13 @@ git commit -m "plain start"
 git push -u origin msster
 ```
 
+## Database connection[^](#prerequisites)
+Pocure Mongo Atlas connection string
+```
+https://cloud.mongodb.com
+```
+Clusters > Sandbox > Connect : copy and paste the connection string from **Connect your Application** somewhere. 
+
 ## App backend[^](#my-exercise-tracker)
 I created the backend project ***inside*** the React app (not recommended for real projects).
 
@@ -489,7 +496,63 @@ export default App;
 ```
 > Note that `import "bootstrap/dist/css/bootstrap.min.css";` is equivalent to `import '../node_modules/bootstrap/dist/css/bootstrap.min.css';`.
 > Note that `import "bootstrap/dist/css/bootstrap.min.css";` in another tutorial is put into `index.js` (importing `App.js`)
-### Components[^](#app-frontend)
+
+
+#### CSS style sheets[^](#components)
+Source file `src/App.css`
+```
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+```
+Source file `src/index.css`
+```
+ody {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+```
+
+#### Components[^](#app-frontend)
 And now we design the single React components.
 * [Navigation Bar](#navbar)
 * [Stub components](#stub-components)
@@ -1013,7 +1076,6 @@ export default class ExerciseEdit extends Component {
   }
 }
 ```
-
 
 # React concepts[^](#my-exercise-tracker)
 ## a basic Component

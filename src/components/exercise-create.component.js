@@ -7,7 +7,7 @@ export default class ExerciseCreate extends Component {
   constructor(props) {
     super(props);  // always in react 
 
-    // this event binding ... always in React
+    // this event binding ... is always needed in React
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
@@ -15,7 +15,8 @@ export default class ExerciseCreate extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     // class properties are in this.state
-    // so initialization needs to happen like that (do not use 'var' or 'let')
+    // so initialization needs to happen like that 
+    // do not use 'var' or 'let' if you want components to refresh automatically
     this.state = {
       username: '',
       description: '',
@@ -72,7 +73,7 @@ export default class ExerciseCreate extends Component {
   }
   
   onSubmit(e) {
-    e.preventDefault(); // intercept React default behaviour
+    e.preventDefault(); // intercept HTML default behaviour
     const exercise = {
       username: this.state.username,
       description: this.state.description,
