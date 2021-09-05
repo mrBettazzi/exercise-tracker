@@ -87,6 +87,10 @@ export default class ExerciseEdit extends Component {
   
   onSubmit(e) {
     e.preventDefault(); // intercept React default behaviour
+    
+    // suggestion from stackoverflow, inserted without understanding
+    this.setState({ isOpened: !this.state.isOpened });
+
     const exercise = {
       username: this.state.username,
       description: this.state.description,

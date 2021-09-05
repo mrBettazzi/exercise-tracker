@@ -27,13 +27,14 @@ export default class ExerciseCreate extends Component {
   }
 
   componentDidMount() {
+    // ReactJS lifecycle method
     // hideous fixed URL
     axios.get('http://localhost:4202/users/')
       .then(res => {
         if (res.data.length > 0) {
           this.setState({
             users: res.data.map(user => user.username),
-            username: res.data[4].username
+            username: res.data[0].username
           })
         } else {
         // plan B
